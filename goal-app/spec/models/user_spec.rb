@@ -37,11 +37,9 @@ RSpec.describe User, type: :model do
   end
 
   describe 'find user by credentials' do
-    # find's user
+    # find's a user that exists in our database
 
-    context 'leverages our password to confirm user' do
-      
-    end
+    # does not find a user that doesn't exist in our database
 
   end
 end
