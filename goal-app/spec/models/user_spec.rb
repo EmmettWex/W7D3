@@ -38,8 +38,46 @@ RSpec.describe User, type: :model do
 
   describe 'find user by credentials' do
     # find's a user that exists in our database
+    let!(:user){create(:user)}
+    
+
+    it "finds a user" do 
+      ex_user = user.find_by_credentials(user.username, user.password)
+      expect(ex_user).to eq(user)
+    end 
 
     # does not find a user that doesn't exist in our database
+    it "returns a user from our database" do
+      ex_user = user.find_by_credentials(user.username, user.password)
+      expect(User.exists?(ex_user[:id])).to be true
+    end 
 
   end
+
+  describe 'is_password?' do
+    let!(:user){create(:user)}
+
+    it "returns true if password is correct" do 
+      expect(user.is_password?(user.password)).to be true  
+    end 
+
+    it "returns false if password is incorrect" do 
+      expect(user.is_password?("not password")).to be false
+    end 
+  end
+
+  describe "reset session token" do
+    let!(:user){create(:user)}
+    
+    it "returns a new session token" do
+      token = user[:session_token]
+      expect(user.reset_session_token).not_to eq(token)
+    end 
+
+    it "saves new sessiaon token to the database" do
+      expect(user.reset_session_token).to be(user[:session_token])
+    end 
+  end 
+
+
 end
